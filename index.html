@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ohi voice player</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
@@ -12,7 +12,7 @@
           font-family: Arial, sans-serif;
           padding: 20px;
         }
-        h1 {
+        #mainHeader {
           text-align: center;
           margin-bottom: 30px;
         }
@@ -33,6 +33,7 @@
           border-radius: 5px;
           font-size: 16px;
           width: 100%;
+          aria-label: "Search for a specific voice clip"
         }
         #buttonsContainer {
           display: flex;
@@ -60,17 +61,36 @@
           display: block;
           margin: 20px auto;
         }
+        .pagination {
+          display: flex;
+          justify-content: center;
+          gap: 10px;
+          margin-top: 20px;
+        }
+        .pagination button {
+          padding: 5px 10px;
+          border: 1px solid #007bff;
+          background-color: #fff;
+          color: #007bff;
+          border-radius: 3px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+        .pagination button:hover {
+          background-color: #007bff;
+          color: #fff;
+        }
     </style>
   </head>
 
   <body>
-    <h1>Ohi Voice Player</h1>
+    <h1 id="mainHeader">Ohi Voice Player</h1>
     <h2>The voice is from おひつじめぇ</h2>
     <h3><a href="https://www.twitch.tv/ohitsu_zi">おひつじめぇ Twitch</a></h3>
     <h3><a href="https://kick.com/ja/ohitsuzi_mee">おひつじめぇ Kick</a></h3>
 
     <!-- Search box to filter buttons -->
-    <input type="text" id="searchBox" placeholder="Search for a voice...">
+    <input type="text" id="searchBox" placeholder="Search for a voice..." aria-label="Search for a specific voice clip">
 
     <!-- Container for buttons -->
     <div id="buttonsContainer"></div>
@@ -82,13 +102,18 @@
       // Sample JSON data
       const audioData = [
         {
-          "voiceName": "Hi",
-          "file": "1.mp3"
+          "voiceName": "なにこれ",
+          "file": "what-is-this.mp3"
         },
         {
-          "voiceName": "Bye",
-          "file": "2.mp3"
-        }
+          "voiceName": "悲鳴",
+          "file": "waRRR.mp3"
+        },
+        {
+          "voiceName": "かわいい-かわいい",
+          "file": "cute-cute.mp3"
+        },
+        // Add more entries here as needed to simulate larger data set
       ];
 
       // Function to create buttons dynamically from JSON data
@@ -96,23 +121,35 @@
         const buttonsContainer = document.getElementById('buttonsContainer');
         buttonsContainer.innerHTML = ''; // Clear current buttons
 
-        audioData.forEach(audio => {
-          if (audio.voiceName.toLowerCase().includes(filter.toLowerCase())) {
-            const button = document.createElement('button');
-            button.className = 'btn';
-            button.innerHTML = `<i class="fas fa-play"></i> ${audio.voiceName}`;
-            button.onclick = () => playAudio(audio.file);
-            buttonsContainer.appendChild(button);
-          }
+        const filteredData = audioData.filter(audio => 
+          audio.voiceName.toLowerCase().includes(filter.toLowerCase())
+        );
+
+        filteredData.forEach(audio => {
+          const button = document.createElement('button');
+          button.className = 'btn';
+          button.innerHTML = `<i class="fas fa-play"></i> ${audio.voiceName}`;
+          button.onclick = () => playAudio(audio.file);
+          buttonsContainer.appendChild(button);
         });
       }
 
       // Function to play audio
       function playAudio(fileName) {
         const audioPlayer = document.getElementById('audioPlayer');
+        if (!audioPlayer.paused) {
+          audioPlayer.pause();
+        }
+        audioPlayer.src = '';
         audioPlayer.src = fileName;
         audioPlayer.play();
       }
+
+      // Event listener to handle audio errors
+      const audioPlayer = document.getElementById('audioPlayer');
+      audioPlayer.addEventListener('error', () => {
+        alert('Error: Unable to play the audio file. Please check the file or try another one.');
+      });
 
       // Event listener for search box
       document.getElementById('searchBox').addEventListener('input', (event) => {
@@ -120,7 +157,7 @@
       });
 
       // Generate buttons on page load
-      window.onload = () => generateButtons();
+      document.addEventListener('DOMContentLoaded', () => generateButtons());
     </script>
   </body>
 </html>
