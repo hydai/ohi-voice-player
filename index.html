@@ -12,9 +12,19 @@
           font-family: Arial, sans-serif;
           padding: 20px;
         }
+        #headerContainer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 30px;
+        }
         #mainHeader {
           text-align: center;
-          margin-bottom: 30px;
+          flex-grow: 1;
+          margin: 0;
+        }
+        #leftLogo, #rightLogo {
+          width: 30%;
         }
         h2 {
           text-align: center;
@@ -61,30 +71,15 @@
           display: block;
           margin: 20px auto;
         }
-        .pagination {
-          display: flex;
-          justify-content: center;
-          gap: 10px;
-          margin-top: 20px;
-        }
-        .pagination button {
-          padding: 5px 10px;
-          border: 1px solid #007bff;
-          background-color: #fff;
-          color: #007bff;
-          border-radius: 3px;
-          cursor: pointer;
-          transition: background-color 0.3s ease;
-        }
-        .pagination button:hover {
-          background-color: #007bff;
-          color: #fff;
-        }
     </style>
   </head>
 
   <body>
-    <h1 id="mainHeader">Ohi Voice Player</h1>
+    <div id="headerContainer">
+      <img id="leftLogo" src="left.png" alt="Left Logo">
+      <h1 id="mainHeader">Ohi Voice Player</h1>
+      <img id="rightLogo" src="right.png" alt="Right Logo">
+    </div>
     <h2>The voice is from おひつじめぇ</h2>
     <h3><a href="https://www.twitch.tv/ohitsu_zi">おひつじめぇ Twitch</a></h3>
     <h3><a href="https://kick.com/ja/ohitsuzi_mee">おひつじめぇ Kick</a></h3>
